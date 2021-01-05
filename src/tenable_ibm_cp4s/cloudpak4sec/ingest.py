@@ -1,7 +1,15 @@
 from restfly.endpoint import APIEndpoint
+from restfly.errors import ForbiddenError, UnauthorizedError
 import time, arrow, json
+import backoff
+
+
+def on_backoff(a):
+    print('on_backoff')
+    print(a)
 
 class IngestionAPI(APIEndpoint):
+    # @backoff.on_exception(backoff.expo, (ForbiddenError, UnauthorizedError), max_tries=4, on_backoff=on_backoff)
     def ingest(self, source, report, wait=False, wait_interval=1, **kwargs):
         '''
         Ingests all of the information in the data paramater directly into the
@@ -46,6 +54,7 @@ class IngestionAPI(APIEndpoint):
             'active': True
         }]
 
+        print("start imports")
         job = self._api.post('imports', json=kwargs).json()
 
         # If we want to wait until the import has returned either a completed
@@ -58,6 +67,7 @@ class IngestionAPI(APIEndpoint):
             raise Exception(job)
         return job
 
+    @backoff.on_exception(backoff.expo, (ForbiddenError, UnauthorizedError), max_tries=4, on_backoff=on_backoff)
     def import_status(self, id):
         '''
         Check the status of an import.
@@ -73,6 +83,7 @@ class IngestionAPI(APIEndpoint):
         Examples:
             >>> ibm.ingest.import_status(JOB_ID)
         '''
+        print("start imports")
         return self._api.get(
             'importstatus/{}'.format(id)).json()
 
@@ -88,4 +99,5 @@ class IngestionAPI(APIEndpoint):
             >>> for job in ibm.ingest.status():
             ...     print(job)
         '''
+        print("start status")
         return self._api.get('importstatus').json()
