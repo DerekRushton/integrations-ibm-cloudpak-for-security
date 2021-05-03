@@ -99,7 +99,7 @@ class DatabaseAPI(APIEndpoint):
             self.update(status.get('missing_collections'))
             status = self.status()
 
-        while len(status.get('collections_without_indexes')) > 0:
+        while len(status.get('collections_without_indexes', [])) > 0:
             # As there appear to be missing indexes in the database, we will
             # want to inform the database API that it should create those
             # collection indexes.  We'll give approximately 2 seconds a
