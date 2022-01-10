@@ -39,10 +39,10 @@ class App(BaseApp):
                             "name": "vulnerability",
                             "properties": {
                                 "links": {
-                                    "type": "list"
+                                    "type": "jsonb"
                                 },
                                 "cpes": {
-                                    "type": "list"
+                                    "type": "jsonb"
                                 },
                                 "solution": {
                                     "type": "string"
