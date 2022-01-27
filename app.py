@@ -45,10 +45,10 @@ class App(BaseApp):
                                     "type": "jsonb"
                                 },
                                 "solution": {
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 "synopsis": {
-                                    "type": "string"
+                                    "type": "text"
                                 }
                             }
                         }
